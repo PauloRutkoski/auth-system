@@ -1,20 +1,16 @@
-package com.rutkoski.login.domain;
+package com.rutkoski.auth.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "username", nullable = false)
 	private String username;
@@ -29,7 +25,8 @@ public class User implements Serializable{
 		this.username = username;
 		this.password = password;
 	}
-	
+
+
 	public Long getId() {
 		return id;
 	}
