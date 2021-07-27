@@ -2,12 +2,9 @@ package com.rutkoski.auth.utils;
 
 import com.rutkoski.auth.domain.User;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,18 +41,14 @@ public class JwtUtils implements Serializable {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getHeader();
     }
 
-    private String getSignatureFromToken(String token){
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getSignature();
-    }
-
     private Boolean isTokenExpired(String token, int type) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date(type == 0 ? this.JWT_TOKEN_VALIDITY : this.JWT_REFRESH_VALIDITY));
     }
 
-    public String generateToken(User user, int type) {
+    public String generateToken(String username, int type) {
         Map<String, Object> claims = new HashMap<>();
-        return generateToken(claims, user.getUsername(), type);
+        return generateToken(claims, username, type);
     }
 
     /**
@@ -81,7 +74,7 @@ public class JwtUtils implements Serializable {
         Claims claims = getAllClaimsFromToken(token);
 
         if(getUsernameFromToken(token) == null || getUsernameFromToken(token).isEmpty()){
-            throw new MalformedJwtException("Not valid token structure");
+            throw new MalformedJwtException("Not a valid token structure");
         }
         if(isTokenExpired(token, type)){
             throw new ExpiredJwtException(header, claims, "Session Expired");
