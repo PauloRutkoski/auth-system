@@ -36,7 +36,7 @@ public class AuthController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<Long> register(@RequestBody User entity){
-        if(service.validatePersist(entity)){
+        if(!service.validatePersist(entity)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         if(service.alreadyExists(entity.getUsername())){

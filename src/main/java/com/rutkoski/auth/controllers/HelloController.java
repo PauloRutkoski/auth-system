@@ -25,7 +25,7 @@ public class HelloController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<String> hello(@RequestHeader Map<String, String> header){
+    public ResponseEntity<String> hello(){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String date = formatter.format(Date.valueOf(LocalDate.now()));
         StringBuilder builder = new StringBuilder();
