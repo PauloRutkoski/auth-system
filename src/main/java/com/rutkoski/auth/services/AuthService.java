@@ -27,7 +27,10 @@ public class AuthService {
         if (user.getUsername() == null || user.getUsername().isEmpty()) {
             return false;
         }
-        return !(user.getPassword() == null || user.getPassword().isEmpty());
+        if(user.getPassword() == null || user.getPassword().isEmpty()){
+            return false;
+        }
+        return true;
     }
 
     public boolean alreadyExists(String username) {
